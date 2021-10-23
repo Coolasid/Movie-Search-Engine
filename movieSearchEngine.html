@@ -82,9 +82,7 @@
             /* grid-column-gap: 2%; */
         }
 
-        /* div{
-                border: 1px solid black;
-            } */
+        
 
         #name {
             display: grid;
@@ -131,6 +129,18 @@
             background-color: white;
             outline: none;
         }
+        /* div{
+                border: 1px solid black;
+            } */
+
+        #results{
+            border: 1px solid black;
+            width: 17%;
+            /* height: 200px; */
+            overflow: scroll;
+            margin: 0 0 0 41.95%;
+
+        }
     </style>
 </head>
 
@@ -163,8 +173,10 @@
     </div>
     <div id="search">
         <div id="pad">
-        <label class="lbl">Search a Movie</label>
-        <input type="text" id="inp"> <button id="btn" onclick="search()">Hit on Search</button>
+            <label class="lbl">Search a Movie</label>
+            <input type="text" id="inp"> <button id="btn" onclick="search()">Hit on Search</button>
+            <br>
+            <!-- <div id="results" ></div> -->
         </div>
     </div>
     <div id="secondBox">
@@ -263,7 +275,7 @@
 
     }
 
-    // startSlideShow()
+    startSlideShow()
 
 
     // creating dataBase of movies->
@@ -460,7 +472,10 @@
 
 
     async function search(){
-        
+
+        let movieBox = document.getElementById("allMovies");
+        allMovies.textContent = "";
+
         let name = document.getElementById("inp").value;
         let res = await fetch(`http://www.omdbapi.com/?S=${name}&apikey=f38d4850`)
         let data = await res.json();
@@ -468,13 +483,60 @@
         movies(data)
     }
     
+
     function movies(el){
+        
+        var moviesArray = el.Search;
+        // console.log(moviesArray);
+        
+        moviesArray.forEach(function(m){
+            // console.log(m.Title);
+            
+            let movieName = m.Title;
+            let releaseYear = m.Year;
+            let posterImg = m.Poster;
+            let imdbRating = m.imdbID;
 
-       el.forEach(function(el){
+            // console.log(movieName,releaseYear,posterImg,imdbRating);
 
-            console.log(el);
-       })
+            let Div = document.createElement("div");
+            let imgBox = document.createElement("div");
+            imgBox.style.width = "50%"
+            imgBox.style.height = "70%"
+            imgBox.style.margin = "0 0 0 25%"
+            let img = document.createElement("img");
+            img.style.width = "100%"
+            img.style.height = "100%"
+            img.src = posterImg;
+
+            imgBox.appendChild(img);
+
+            let movieName1 = document.createElement("div");
+            movieName1.textContent = movieName;
+            movieName1.style.fontWeight = "700"
+            movieName1.style.marginTop = "5px"
+
+            let relDate = document.createElement("div");
+            relDate.textContent = releaseYear;
+            relDate.style.fontWeight = "700"
+            relDate.style.marginTop = "5px"
+
+            let imdb = document.createElement("div");
+            imdb.textContent = "IMDb Rating  " + imdbRating;
+            imdb.style.fontWeight = "700"
+            imdb.style.marginTop = "5px"
+
+
+
+
+
+            Div.append(imgBox, movieName1, relDate, imdb);
+            allMovies.appendChild(Div);
+
+        }) 
     }
+
+    
 
 
 </script>
