@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+</head>
+<style>
+    body
+    {
+    font-family: 'Rubik', sans-serif;
+    background-color: #131a27;
+    text-align: center;
+    padding-top: 5px;
+    overflow: scroll;
+    }
+.sign-up{
+    width: 400px;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    background: #fff;
+    padding: 20px 20px 20px 20px;
+    margin: 5% auto 0;
+    border-radius: 1px;
+    text-align: left;
+}
+
+    .inputbox{
+        padding:10px;
+        margin:10px 0px;
+        width: 350px;
+        background:#F8F4F4;
+        border-radius: 7px;
+        border: 1px solid rgba(128, 128, 128, 0.281);
+    }
+.signbtn{
+    color:white;
+    background: #00AA8A;
+    border: solid #00AA8A thick;
+    width:100px;
+    height: 30px;
+    margin-top: 10px;
+
+}
+form{
+    margin-left: 10px;
+} 
+hr{
+    padding-left: 0px;
+    margin-left: 0px;
+    width: 408px;
+}
+.white{
+    color: white;
+}
+.alaccount{
+    color: white;
+}
+a {
+    color: white;
+}
+#btn {
+    cursor: pointer;
+}
+
+#header{
+            width: 80%;
+            height: 50px;
+            margin: 0 0 0 10%;
+            background-color: white;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: auto auto auto;
+            box-sizing: border-box;
+            padding: 1% 0 0 0;
+        }
+        #header>div{
+            padding: 4% 0 0 0;
+        }
+
+        #homePage:hover, #signUp:hover, #login:hover{
+           color: #131a27;
+           cursor: pointer;
+           /* border-bottom: 5px solid #131a27; */
+        }
+        #headBox{
+            width: 100%;
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+        img{
+            width: 40%;
+            height: 80%;
+             cursor: pointer;
+        }
+        .imgBox{
+            width: 49%;
+            /* background-color: white; */
+            border-radius: 10px;
+        }
+
+
+</style>
+
+<body>
+    <div id="headBox">
+        <div id="name">
+            <div class="imgBox">
+                <img
+                    src="https://static.wikia.nocookie.net/logopedia/images/0/07/Hotstar_2018.svg/revision/latest?cb=20190427142129" />
+            </div>
+        </div>
+        <div>
+            <div id="header">
+                <div id="homePage">Home</div>
+                <div id="signUp">Signup</div>
+                <div id="login">Login</div>
+            </div>
+        </div>
+    
+    </div>
+
+    <div class="sign-up">
+        <form onsubmit="signIn(event)" action="" id="myForm">
+        <h1>Login</h1>
+        <hr>
+                <input type="Email" class="inputbox" id="email" placeholder="Please Enter Your Email" required>
+                <input type= "password" class="inputbox" id="pass" placeholder="Please Enter Your Password" required>
+                <button type="submit" class="signbtn" id="btn">Login</button>
+            </form>
+    </div>  
+    <p class="alaccount">Don't have an account?&nbsp;<a href="signup.html"  ><span class="white">Sign Up here.</span></a></p>
+</body>
+
+<script>
+
+    function signIn(e) {
+
+            e.preventDefault();
+
+            let myForm = document.getElementById("myForm")
+ 
+
+            let email = myForm.email.value;
+            let password = myForm.pass.value;
+        // console.log(,email,password)
+
+
+        let allUsers = JSON.parse(localStorage.getItem("user"))
+
+        var flag = true;
+        allUsers.forEach(function(user) {
+           
+            
+
+            if(email == user.email && password == user.password){
+               flag = false;
+               window.location.href = "movieSearchEngine.html"
+              
+            }
+         });
+
+        if (flag) {
+            alert("enter valid information ")
+        }
+
+    }
+   
+  let homePage = document.getElementById("homePage");
+
+    function home() {
+        window.location.href = "movieSearchEngine.html";
+    }
+
+    homePage.addEventListener("click", home);
+
+
+
+
+    let signUp1 = document.getElementById("signUp");
+
+    function signUp() {
+        window.location.href = "signup.html";
+    }
+
+    signUp1.addEventListener("click", signUp);
+
+
+
+    let login = document.getElementById("login");
+
+    function signin() {
+        window.location.href = "signin.html";
+    }
+
+    login.addEventListener("click", signin);
+</script>
+</html>
