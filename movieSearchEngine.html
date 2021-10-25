@@ -480,16 +480,23 @@
         let res = await fetch(`http://www.omdbapi.com/?S=${name}&apikey=f38d4850`)
         let data = await res.json();
         
+        
         movies(data)
     }
-    
 
+    
+    
+    
     function movies(el){
         
         var moviesArray = el.Search;
-        // console.log(moviesArray);
+        for( let i = 0; i< moviesArray.length; i++){
+
+            console.log(moviesArray[i].imdbID);
+        }
         
-        if(moviesArray.length != 0){
+        
+        /*
             moviesArray.forEach(function(m){
                 // console.log(m);
                 
@@ -531,12 +538,10 @@
                 allMovies.appendChild(Div);
 
             }) 
-        }  else if(moviesArray == TypeError){
-            alert();    
-        } 
+       */
     }
-
-    
+        
+   
 
 
 </script>
