@@ -75,7 +75,7 @@
 
         #allMovies {
             width: 80%;
-            height: 1200px;
+            /* height: 1200px; */
             margin: 1% auto auto auto;
             display: grid;
             grid-template-columns: auto auto auto;
@@ -141,6 +141,15 @@
             margin: 0 0 0 41.95%;
 
         }
+
+        #moviesDesc{
+            width: 70%;
+            /* height: 400px; */
+            margin: auto;
+            display: grid;
+            grid-template-columns: 40% 60%;
+
+        }
     </style>
 </head>
 
@@ -187,6 +196,7 @@
         <div id="allMovies">
 
         </div>
+        <div id="moviesDesc"></div>
 
     </div>
 
@@ -474,7 +484,9 @@
     async function search(){
 
         let movieBox = document.getElementById("allMovies");
+         let movieDescDiv = document.getElementById("moviesDesc");
         allMovies.textContent = "";
+        movieDescDiv.textContent = "";
 
         let name = document.getElementById("inp").value;
         let res = await fetch(`http://www.omdbapi.com/?S=${name}&apikey=f38d4850`)
@@ -553,14 +565,92 @@
         }
         
     }
-        
+
+    let allMoviesDiv = document.getElementById("allMovies");
+    
    async function movieDesc(mName) {
-        console.log(mName);
+        // console.log(mName);
+    let movieDescDiv = document.getElementById("moviesDesc");
+    
+    movieDescDiv.textContent = null;
+    allMoviesDiv.textContent = null;
+    
+
+        let res = await fetch(`http://www.omdbapi.com/?t=${mName}&apikey=f38d4850`)
+        let sid = await res.json();
+                // console.log(sid)
         
-            let res = await fetch(`http://www.omdbapi.com/?t=${mName}&apikey=f38d4850`)
-                console.log(res);
+            appendMovieDesc(sid);
+    }
+
+    
+
+    function appendMovieDesc(movie){
+
+        console.log(movie);
+
+        let movieName = movie.Title;
+        let movieDate = movie.Released;
+        let movieCast = movie.Actors;
+        let movieRating = +movie.imdbRating;
+        let moviePoster = movie.Poster;
+
+        // console.log(movieName, movieDate, movieCast, movieRating);
+
+        
+            let firstDiv = document.createElement("div");
+                let imgBox = document.createElement("div");
                 
+                    let img = document.createElement("img");
+                    img.src = moviePoster;
+                    
+                imgBox.appendChild(img);
+            firstDiv.appendChild(imgBox);
+                
+
+            let secondDiv = document.createElement("div");
+                let titleDiv = document.createElement("div");
+                titleDiv.style.fontSize = "20px";
+                titleDiv.style.fontWeight = "700";
+
+                titleDiv.textContent = movieName;
+
+                let releasedDateDiv = document.createElement('div');
+                releasedDateDiv.style.fontWeight = "500"
+                releasedDateDiv.style.margin = "1% 0 0 0"
+                releasedDateDiv.textContent = "Release Date: "+ movieDate;
+
+                let castDiv = document.createElement('div');
+                castDiv.style.fontWeight = "500"
+                castDiv.style.margin = "1% 0 0 0"
+                castDiv.textContent = "Movie Cast: "+ movieCast;
+
+                let imbdRatingDiv = document.createElement('div');
+                imbdRatingDiv.style.fontWeight = "500"
+                imbdRatingDiv.style.margin = "1% 0 0 0"
+                imbdRatingDiv.textContent = "IMDb Rating: "+ movieRating;
+
+                
+
+            secondDiv.append(titleDiv, releasedDateDiv, castDiv, imbdRatingDiv)
+
+            if (movieRating > 8.5) {
+            let rec = document.createElement("div");
+            rec.textContent = "Recommended";
+            rec.style.margin = "1% 0 0 0"
+            rec.style.fontWeight = "700"
+            secondDiv.appendChild(rec);
         }
+        
+        allMoviesDiv.append(firstDiv,secondDiv)
+            
+    
+        
+
+
+
+
+    }
         
     
     
