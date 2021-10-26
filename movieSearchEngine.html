@@ -284,7 +284,7 @@
 
         {
             name: "Free Guy",
-            releaseDate: "Aug 13",
+            releaseYear: "2021",
             imbdRating: 7.3,
             img: "https://m.media-amazon.com/images/M/MV5BOTY2NzFjODctOWUzMC00MGZhLTlhNjMtM2Y2ODBiNGY1ZWRiXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_QL75_UY281_CR3,0,190,281_.jpg"
 
@@ -293,7 +293,7 @@
 
         {
             name: "Black Widow",
-            releaseDate: "July 9",
+            releaseYear: "2021",
             imbdRating: 6.9,
             img: "https://terrigen-cdn-dev.marvel.com/content/prod/1x/042_bluebayou_digital_keyart_teaser_r16_lg.jpg"
 
@@ -302,7 +302,7 @@
 
         {
             name: "Sardar Udham",
-            releaseDate: "Oct 16",
+            releaseYear: "2021",
             imbdRating: 9.2,
             img: "https://upload.wikimedia.org/wikipedia/en/5/5b/Sardar_Udham_poster.jpg"
 
@@ -311,7 +311,7 @@
 
         {
             name: "Bell Bottom",
-            releaseDate: "Aug 19",
+            releaseYear: "2021",
             imbdRating: 7.8,
             img: "https://upload.wikimedia.org/wikipedia/en/2/21/Bell_Bottom_film_Poster.jpg"
 
@@ -320,7 +320,7 @@
 
         {
             name: "Shershaah",
-            releaseDate: "Aug 12",
+            releaseYear: "2021",
             imbdRating: 8.7,
             img: "https://upload.wikimedia.org/wikipedia/en/9/91/Shershaah_film_poster.jpg"
 
@@ -329,7 +329,7 @@
 
         {
             name: "Bhuj",
-            releaseDate: "Aug 13",
+            releaseYear: "2021",
             imbdRating: 7.9,
             img: "https://upload.wikimedia.org/wikipedia/en/4/42/Bhuj-_The_Pride_of_India_film_poster.jpg"
 
@@ -338,7 +338,7 @@
 
         {
             name: "Zombie Reddy",
-            releaseDate: "Feb 5",
+            releaseYear: "2020",
             imbdRating: 6.8,
             img: "https://upload.wikimedia.org/wikipedia/en/c/cd/Zombie_Reddy.jpg"
 
@@ -347,7 +347,7 @@
 
         {
             name: "Sarrainodu",
-            releaseDate: "Apr 22",
+            releaseYear: "2019",
             imbdRating: 8.9,
             img: "https://upload.wikimedia.org/wikipedia/en/d/d6/Sarrainodu_poster.jpg"
 
@@ -356,7 +356,7 @@
 
         {
             name: "Yevadu",
-            releaseDate: "Jan 12",
+            releaseYear: "2016",
             imbdRating: 7.4,
             img: "https://upload.wikimedia.org/wikipedia/en/e/e7/Yevadu_poster.jpg"
 
@@ -383,13 +383,13 @@
             let movieName = movie.name;
 
 
-            let releaseDate = movie.releaseDate;
+            let releaseYear = movie.releaseYear;
 
             let posterImg = movie.img;
 
             let imdbRating = movie.imbdRating;
 
-            // console.log(movieName, releaseDate, posterImg, imdbRating)
+            // console.log(movieName, releaseYear, posterImg, imdbRating)
 
 
             let Div = document.createElement("div");
@@ -410,7 +410,7 @@
             movieName1.style.marginTop = "5px"
 
             let relDate = document.createElement("div");
-            relDate.textContent = releaseDate;
+            relDate.textContent = releaseYear;
             relDate.style.fontWeight = "700"
             relDate.style.marginTop = "5px"
 
@@ -490,20 +490,19 @@
     function movies(el){
         
         var moviesArray = el.Search;
-        for( let i = 0; i< moviesArray.length; i++){
-
-            console.log(moviesArray[i].imdbID);
-        }
+        console.log(moviesArray)
+        let response = el.Response;
+        // console.log(response);
         
-        
-        /*
+            if(response == "True"){
             moviesArray.forEach(function(m){
                 // console.log(m);
                 
                 let movieName = m.Title;
+                    
                 let releaseYear = m.Year;
                 let posterImg = m.Poster;
-                let imdbRating = m.imdbID;
+                
 
                 // console.log(movieName,releaseYear,posterImg,imdbRating);
 
@@ -512,11 +511,14 @@
                 imgBox.style.width = "50%"
                 imgBox.style.height = "70%"
                 imgBox.style.margin = "0 0 0 25%"
+                imgBox.addEventListener("click", () => movieDesc(m.Title))
+               
+
                 let img = document.createElement("img");
                 img.style.width = "100%"
                 img.style.height = "100%"
                 img.src = posterImg;
-
+                
                 imgBox.appendChild(img);
 
                 let movieName1 = document.createElement("div");
@@ -529,19 +531,41 @@
                 relDate.style.fontWeight = "700"
                 relDate.style.marginTop = "5px"
 
-                let imdb = document.createElement("div");
-                imdb.textContent = "IMDb Rating  " + imdbRating;
-                imdb.style.fontWeight = "700"
-                imdb.style.marginTop = "5px"
+                // let imdb = document.createElement("div");
+                // imdb.textContent = "IMDb Rating  " + imdbRating;
+                // imdb.style.fontWeight = "700"
+                // imdb.style.marginTop = "5px"
 
-                Div.append(imgBox, movieName1, relDate, imdb);
+                Div.append(imgBox, movieName1, relDate);
                 allMovies.appendChild(Div);
 
+
+
+
+                
+
             }) 
-       */
+        }else{
+                let img = document.createElement("img");
+                img.src = "https://c.tenor.com/IHdlTRsmcS4AAAAM/404.gif"
+
+                allMovies.append(img);  
+        }
+        
     }
         
-   
+   async function movieDesc(mName) {
+        console.log(mName);
+        
+            let res = await fetch(`http://www.omdbapi.com/?t=${mName}&apikey=f38d4850`)
+                console.log(res);
+                
+        }
+        
+    
+    
 
+
+ 
 
 </script>
