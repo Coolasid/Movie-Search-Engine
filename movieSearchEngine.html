@@ -150,6 +150,14 @@
             grid-template-columns: 40% 60%;
 
         }
+        #trnd{
+            background-color: white;
+            border-radius: 10px;
+            font-weight: 700;
+            color: #131a27;
+            background-color: white;
+            outline: none;
+        }
     </style>
 </head>
 
@@ -184,8 +192,10 @@
         <div id="pad">
             <label class="lbl">Search a Movie</label>
             <input type="text" id="inp"> <button id="btn" onclick="search()">Hit on Search</button>
+           <a href="movieDesc.html"><button id="trnd">Trending Movies</button></a> 
             <br>
             <div id="results" ></div>
+            
         </div>
     </div>
     <div id="secondBox">
@@ -567,6 +577,9 @@
     }
 
     let allMoviesDiv = document.getElementById("allMovies");
+
+
+    
     
    async function movieDesc(mName) {
         // console.log(mName);
@@ -644,13 +657,9 @@
         
         allMoviesDiv.append(firstDiv,secondDiv)
             
-    
-        
-
-
-
-
     }
+
+
         
     
     
