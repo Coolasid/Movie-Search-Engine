@@ -121,6 +121,7 @@
         }
         #pad{
             padding: 10px 0 0 0;
+            
         }
         #btn{
             border-radius: 10px;
@@ -135,11 +136,14 @@
 
         #results{
             /* border: 1px solid black;  */
-            width: 17%;
-            height: 200px;
+            width: 11%;
+            /* height: 200px; */
             overflow: scroll;
-            margin: 0 0 0 41.95%;
+            margin: 1px 0 0 40.75%;
             position: relative;
+            /* background-color: white; */
+            box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.15);
+            transition: all .5s linear;
         }
 
         #moviesDesc{
@@ -158,6 +162,14 @@
             background-color: white;
             outline: none;
         }
+
+        #results>div:hover{
+            /* background:black; */
+            /* font-weight: 700; */
+            cursor: pointer;
+            
+        }
+
     </style>
 </head>
 
@@ -191,7 +203,7 @@
     <div id="search">
         <div id="pad">
             <label class="lbl">Search a Movie</label>
-            <input type="text" id="inp"> <button id="btn" onclick="search()">Hit on Search</button>
+            <input type="text" id="inp" oninput="debouncing(results,1000)" autocomplete="off"> <button id="btn" onclick="search()">Hit on Search</button>
            <a href="movieDesc.html"><button id="trnd">Trending Movies</button></a> 
             <br>
             <div id="results" ></div>
@@ -591,7 +603,7 @@
 
         let res = await fetch(`http://www.omdbapi.com/?t=${mName}&apikey=f38d4850`)
         let sid = await res.json();
-                // console.log(sid)
+                console.log(sid)
         
             appendMovieDesc(sid);
     }
@@ -660,7 +672,65 @@
     }
 
 
+    //Debouncing=>
+    var timerId;
+    let resultsDiv = document.getElementById("results")
+
+    async function results() {
+        resultsDiv.textContent = null;
+            let name = document.getElementById("inp").value;
+
+            
+
+            if (name.length < 3) {
+                return false;
+            }
+
+            let res = await fetch(`https://www.omdbapi.com/?S=${name}&apikey=f38d4850`)
+            let data = await res.json();
+            // console.log(data);
+
+            let moviesArray = data.Search;
+                // console.log(moviesArray)
+
+                appendMovies(moviesArray);
+        }
+
+    function appendMovies(moviesArr){
+        resultsDiv.textContent = null;
         
+
+        moviesArr.forEach(function(movie){
+            // console.log(movie.Title);
+
+            let p = document.createElement("div");
+            p.textContent = movie.Title;
+            p.style.backgroundColor = "white"
+            p.style.fontSize = "13px";
+            p.style.padding = "1%"
+            p.style.borderRadius = "2px"
+            p.style.textAlign = "left"
+            
+            
+
+            resultsDiv.append(p);
+
+        })
+
+    }
+
+    function debouncing(func,delay){
+
+        if(timerId){
+            clearInterval(timerId);
+        }
+
+        timerId = setTimeout(function(){
+            func();
+        },delay);
+
+    }
+
     
     
 
