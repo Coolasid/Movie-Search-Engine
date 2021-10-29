@@ -110,6 +110,7 @@
             width: 50%;
             
         }
+        
     </style>
 </head>
 <body>
@@ -132,84 +133,78 @@
     </div>
     <!-- /* common in all pages */ -->
     <div class="sign-up">
-        <form id="myForm" onsubmit="signUp(event)">
+        <form id="form" onsubmit="SignUp(event)">
            
             <h1>Sign Up</h1>
             <p>Please fill in this form to create an account!</p>
             <hr>
             
-            <input id="name" type="name" class="inputbox" placeholder="Name" required>
+            <input id="name" type="text" class="inputbox" placeholder="Name" >
            
-            <input id="email" type="Email" class="inputbox" placeholder="Email" required>
+            <input id="email" type="email" class="inputbox" placeholder="Email" >
             
-            <input id="password" type="password" class="inputbox" placeholder="Password" required>
+            <input id="pass" type="password" class="inputbox" placeholder="Password" >
             
+            <input id="userNm" type="text" class="inputbox" placeholder="username" >
            
+            <input id="mobile" type="number" class="inputbox" placeholder="mobile" >
+
+            <input id="desc" type="text" class="inputbox" placeholder="description" >
                 
-            <button type="submit" class="signbtn">Sign Up</button>
+            <button  class="signbtn" type="submit" > Sign Up </button>
         </form>
     </div>
     <p class="alaccount">Already have an account?&nbsp;<a href="signin.html"><span class="white">Login here.</span></a></p>
 </body>
 </html>
 <script>
-    if (localStorage.getItem("user") === null) {
-            localStorage.setItem("user", JSON.stringify([]));
-        }
-
-    function signUp(e){
-
-    e.preventDefault();
+   
+  async  function SignUp(e){
+       e.preventDefault()
     
-    let myForm = document.getElementById("myForm")
+       let form = document.getElementById("form");
+    
+       let userData = {
+           name: form.name.value,
+           email: form.email.value,
+           password: form.pass.value,
+           username: form.userNm.value,
+           mobile: form.mobile.value,
+           description: form.desc.value
+       }
 
-    let name = myForm.name.value;
-    // 
+    //    console.log(userData);
+    
+    userData = JSON.stringify(userData);
+    //    console.log(userData);
 
-    let email = myForm.email.value;
-    let password = myForm.password.value;
-        // console.log(name,email,password)
+    let res = await fetch("https://masai-api-mocker.herokuapp.com/auth/register",{
+
+        method:"POST",
+        body:userData,
+        headers:{
+            "Content-Type":"application/json",
+        },
 
     
+    })
+    
+    let data = await res.json();
+      console.log(data);
+      if (data.error == true) {
+          alert("User already Exist, You can click on SignIn button")
+      } else {
+          window.location.href = "signIn.html";
+      }
+    
+    
 
-    //0. grab and prepare user data
-   let user = {
-
-    name,
-    email,
-    password
    }
 
 
-   //1. ger array from localstorage
-
-    let arr = JSON.parse(localStorage.getItem("user")); //existing users
-
-    //2. push new users to array
-    let flag = true;
-
-     //added a new user
-
-     arr.forEach(function(user){
-        if(email == user.email){
-            flag = false;
-            alert("Email already Exist")
-        }
-     });
-
-     if(flag){
-         arr.push(user);
-         localStorage.setItem("user", JSON.stringify(arr));
-         window.location.href="signin.html"
-     }
 
 
-    
-    
-    
-}
-
-
+  
     let homePage = document.getElementById("homePage");
 
     function home(){

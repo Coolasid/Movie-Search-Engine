@@ -98,7 +98,7 @@
             background-color: #131a27;
             color: white;
             box-sizing: border-box;
-            margin: 7% 0 0 0;
+            /* margin: 7% 0 0 0; */
             width: 50%;
             height: 50%;
             border-radius: 10px;
@@ -169,6 +169,12 @@
             cursor: pointer;
             
         }
+        /* div{
+            border: 1px solid black;
+        } */
+        span{
+            border: 1px solid black;
+        }
 
     </style>
 </head>
@@ -184,9 +190,10 @@
                 <div id="sort">
                     <div>
                         <button class="colour" id="HToL" onclick="highToLow()">High to Low</button>
-                    </div>
-                    <div>
                         <button class="colour" id="LToH" onclick="LowToHigh()">Low to high</button>
+                    </div>
+                    <div id="nameApp">
+                       
                     </div>
                 </div>
             </div>
@@ -734,7 +741,15 @@
     
     
 
+    function appendName() {
+        let arr = JSON.parse(localStorage.getItem("userName"));
 
+        let na = document.getElementById("nameApp");
+        na.textContent = "Hello " + arr[arr.length - 1];
+        na.style.margin = "5%"
+
+    }
+    appendName();
  
 
 </script>

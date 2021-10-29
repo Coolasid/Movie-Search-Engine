@@ -121,10 +121,10 @@ a {
     </div>
 
     <div class="sign-up">
-        <form onsubmit="signIn(event)" action="" id="myForm">
+        <form onsubmit="signIn(event)" action="" id="form">
         <h1>Login</h1>
         <hr>
-                <input type="Email" class="inputbox" id="email" placeholder="Please Enter Your Email" required>
+                <input type="text" class="inputbox" id="userNm" placeholder="uername" required>
                 <input type= "password" class="inputbox" id="pass" placeholder="Please Enter Your Password" required>
                 <button type="submit" class="signbtn" id="btn">Login</button>
             </form>
@@ -134,35 +134,65 @@ a {
 
 <script>
 
-    function signIn(e) {
+  async  function signIn(e) {
 
             e.preventDefault();
 
-            let myForm = document.getElementById("myForm")
- 
+         let form = document.getElementById("form");
 
-            let email = myForm.email.value;
-            let password = myForm.pass.value;
-        // console.log(,email,password)
+                let userData = {
+                    username: form.userNm.value,
+                    password: form.pass.value
+                };
+
+                let dataToSend = JSON.stringify(userData);
+                // console.log(dataToSend);
 
 
-        let allUsers = JSON.parse(localStorage.getItem("user"))
+                let res = await fetch("https://masai-api-mocker.herokuapp.com/auth/login", {
 
-        var flag = true;
-        allUsers.forEach(function(user) {
-           
-            
+                    method: "POST",
+                    body: dataToSend,
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
 
-            if(email == user.email && password == user.password){
-               flag = false;
-               window.location.href = "movieSearchEngine.html"
-              
+                })
+
+                let data = await res.json();
+                // console.log(data);
+                dataToSend = JSON.parse(dataToSend);
+                fetchMyData(dataToSend.username, data.token);
             }
-         });
 
-        if (flag) {
-            alert("enter valid information ")
-        }
+
+            async function fetchMyData(userName, token) {
+                let res = await fetch(`https://masai-api-mocker.herokuapp.com/user/${userName}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                let data = await res.json();
+                // console.log(data);
+                // console.log(data.name)
+
+                if (data.name == null) {
+                    alert("please fill valid details")
+                } else {
+                    if (localStorage.getItem("userName") == null) {
+                        localStorage.setItem("userName", JSON.stringify([]));
+                    };
+
+                    let arr = JSON.parse(localStorage.getItem("userName"));
+
+                    arr.push(data.name);
+
+                    localStorage.setItem("userName", JSON.stringify(arr));
+
+                    window.location.href = "movieSearchEngine.html";
+                }
 
     }
    
