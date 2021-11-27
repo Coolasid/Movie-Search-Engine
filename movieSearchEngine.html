@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hotstar</title>
+    <link rel="shortcut icon" type="image/jpg"
+        href="https://simg.nicepng.com/png/small/269-2695814_hotstar-tv-movies-hotstar-app-icon.png" />
     <style>
         body {
             font-family: 'Rubik', sans-serif;
@@ -137,13 +139,33 @@
         #results{
             /* border: 1px solid black;  */
             width: 11%;
-            /* height: 200px; */
+            height: 200px;
             overflow: scroll;
-            margin: 1px 0 0 40.75%;
+            margin: 1px 0 0 44.1%;
             position: relative;
-            /* background-color: white; */
-            box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.15);
+            background-color: white;
+            border-radius: 5px;
             transition: all .5s linear;
+            display: none;
+            animation: fadeIn  1s;
+        }
+        @-webkit-keyframes fadeIn {
+        from {opacity: 0;} 
+        to {opacity: 1;}
+        }
+
+        @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity:1 ;}
+        }
+
+        #results>div:hover{
+            background-color: rgb(0, 0, 0);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            animation: fadeIn  .5s;
+            border-radius: 5px;
         }
 
         #moviesDesc{
@@ -179,12 +201,12 @@
     </style>
 </head>
 
-<body>
+<body id="bod">
     <div id="firstBox">
         <div id="headBox">
             <div id="name">
                 <div class="imgBox">
-                    <img src="https://static.wikia.nocookie.net/logopedia/images/0/07/Hotstar_2018.svg/revision/latest?cb=20190427142129"
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Hotstar_logo.svg/2560px-Hotstar_logo.svg.png"
                         class="img" />
                 </div>
                 <div id="sort">
@@ -210,8 +232,8 @@
     <div id="search">
         <div id="pad">
             <label class="lbl">Search a Movie</label>
-            <input type="text" id="inp" oninput="debouncing(results,1000)" autocomplete="off"> <button id="btn" onclick="search()">Hit on Search</button>
-           <a href="movieDesc.html"><button id="trnd">Trending Movies</button></a> 
+            <input type="text" id="inp" oninput="debouncing(results,100)" autocomplete="off"> 
+           <a href="trendingmovie.html"><button id="trnd">Trending Movies</button></a> 
             <br>
             <div id="results" ></div>
             
@@ -440,7 +462,7 @@
             img.style.width = "100%"
             img.style.height = "100%"
             img.src = posterImg;
-
+            img.style.borderRadius = "10px"
             imgBox.appendChild(img);
 
             let movieName1 = document.createElement("div");
@@ -511,6 +533,9 @@
 
 
     async function search(){
+        
+        let resu = document.getElementById("results");
+        resu.style.display = "none";
 
         let movieBox = document.getElementById("allMovies");
          let movieDescDiv = document.getElementById("moviesDesc");
@@ -552,6 +577,7 @@
                 imgBox.style.width = "50%"
                 imgBox.style.height = "70%"
                 imgBox.style.margin = "0 0 0 25%"
+                imgBox.title = "click on me!!"
                 imgBox.addEventListener("click", () => movieDesc(m.Title))
                
 
@@ -559,7 +585,7 @@
                 img.style.width = "100%"
                 img.style.height = "100%"
                 img.src = posterImg;
-                
+                img.style.borderRadius = "10px"
                 imgBox.appendChild(img);
 
                 let movieName1 = document.createElement("div");
@@ -635,7 +661,7 @@
                 
                     let img = document.createElement("img");
                     img.src = moviePoster;
-                    
+                    img.style.borderRadius = "10px"
                 imgBox.appendChild(img);
             firstDiv.appendChild(imgBox);
                 
@@ -687,10 +713,16 @@
         resultsDiv.textContent = null;
             let name = document.getElementById("inp").value;
 
-            
+             if (name.length > 1) {
+            let resu = document.getElementById("results");
+            resu.style.display = "block";
+        }
 
-            if (name.length < 3) {
+            if (name.length < 1) {
+               let resu = document.getElementById("results");
+                resu.style.display = "none";
                 return false;
+
             }
 
             let res = await fetch(`https://www.omdbapi.com/?S=${name}&apikey=f38d4850`)
@@ -712,12 +744,17 @@
 
             let p = document.createElement("div");
             p.textContent = movie.Title;
-            p.style.backgroundColor = "white"
-            p.style.fontSize = "13px";
-            p.style.padding = "1%"
-            p.style.borderRadius = "2px"
-            p.style.textAlign = "left"
             
+
+            p.style.padding = "1%"
+            p.style.textAlign = "center"
+            p.style.fontSize = "13px"
+            p.addEventListener("click",() =>{
+                search();
+                document.getElementById("inp").value = movie.Title;
+                let resu = document.getElementById("results");
+                resu.style.display = "none";
+            })
             
 
             resultsDiv.append(p);
@@ -727,7 +764,13 @@
     }
 
     function debouncing(func,delay){
+         let name = document.getElementById("inp").value;
+      
+        // console.log(name.length);
+       
 
+      
+        
         if(timerId){
             clearInterval(timerId);
         }
@@ -751,5 +794,13 @@
     }
     appendName();
  
+   let id = document.getElementById("mySlideShow");
+   id.addEventListener("click",() =>{
+        let resu = document.getElementById("results");
+       resu.style.display = "none";
+   })
+  
+   
+    
 
 </script>
